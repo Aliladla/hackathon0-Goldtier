@@ -1,0 +1,38 @@
+# Personal AI Employee - Python Dependencies
+
+# File system monitoring
+watchdog>=4.0.0
+
+# Environment variable management
+python-dotenv>=1.0.0
+
+# Gmail API (Silver tier)
+google-api-python-client>=2.100.0
+google-auth-httplib2>=0.1.1
+google-auth-oauthlib>=1.1.0
+
+# WhatsApp Web automation (Silver tier)
+playwright>=1.40.0
+
+# Scheduling (Silver tier)
+schedule>=1.2.0
+
+# Standard library (included with Python 3.13+)
+# pathlib - built-in
+# logging - built-in
+# datetime - built-in
+
+# ============================================================
+# GOLD TIER DEPENDENCIES
+# ============================================================
+
+# Odoo integration (Gold tier)
+odoorpc>=0.9.0
+
+# Social media integrations (Gold tier)
+facebook-sdk>=3.1.0
+instagrapi>=2.0.0
+tweepy>=4.14.0
+
+# Error handling and retry logic (Gold tier)
+tenacity>=8.2.0

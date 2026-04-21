@@ -1,0 +1,84 @@
+{
+  "name": "instagram-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Instagram Graph API integration",
+  "protocol": "Model Context Protocol v1.0",
+  "capabilities": {
+    "tools": [
+      {
+        "name": "create_post",
+        "description": "Create a post on Instagram business account",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "caption": {
+              "type": "string",
+              "description": "Post caption (max 2200 chars)",
+              "maxLength": 2200
+            },
+            "image_path": {
+              "type": "string",
+              "description": "Local file path to image (required)"
+            },
+            "hashtags": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Hashtags (without # prefix)",
+              "maxItems": 30
+            }
+          },
+          "required": ["image_path", "caption"]
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "success": { "type": "boolean" },
+            "media_id": { "type": "string" },
+            "permalink": { "type": "string" },
+            "error": { "type": "string" }
+          }
+        }
+      },
+      {
+        "name": "get_media_insights",
+        "description": "Get engagement metrics for a published post",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "media_id": {
+              "type": "string",
+              "description": "Instagram media ID"
+            }
+          },
+          "required": ["media_id"]
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "likes": { "type": "integer" },
+            "comments": { "type": "integer" },
+            "shares": { "type": "integer" },
+            "reach": { "type": "integer" },
+            "impressions": { "type": "integer" },
+            "saves": { "type": "integer" },
+            "engagement_rate": { "type": "number" },
+            "error": { "type": "string" }
+          }
+        }
+      }
+    ]
+  },
+  "authentication": {
+    "type": "oauth2",
+    "required": ["INSTAGRAM_ACCESS_TOKEN", "INSTAGRAM_BUSINESS_ACCOUNT_ID"],
+    "scopes": ["instagram_basic", "instagram_content_publish"]
+  },
+  "rateLimits": {
+    "calls_per_hour": 200,
+    "posts_per_day": 25
+  },
+  "errorHandling": {
+    "retryable": ["rate_limit", "timeout"],
+    "non_retryable": ["invalid_token", "permission_denied", "invalid_image", "caption_too_long"]
+  }
+}

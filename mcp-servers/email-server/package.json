@@ -1,0 +1,21 @@
+{
+  "name": "ai-employee-email-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for sending emails via Gmail SMTP",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "nodemailer": "^6.9.7",
+    "dotenv": "^16.3.1"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "author": "AI Employee",
+  "license": "MIT"
+}

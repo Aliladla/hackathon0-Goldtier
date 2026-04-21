@@ -1,0 +1,19 @@
+2026-04-16 21:38:43 | INFO     | Orchestrator | ============================================================
+2026-04-16 21:38:43 | INFO     | Orchestrator | Personal AI Employee (Bronze Tier) Starting
+2026-04-16 21:38:43 | INFO     | Orchestrator | ============================================================
+2026-04-16 21:38:43 | INFO     | Orchestrator | Initializing vault at: C:\Users\Dell\Desktop\hackathon0ali\AI_Employee_Vault
+2026-04-16 21:38:43 | INFO     | Orchestrator | Vault directory exists, ensuring folder structure
+2026-04-16 21:38:43 | INFO     | Orchestrator | Created Dashboard.md template
+2026-04-16 21:38:43 | INFO     | Orchestrator | Created Company_Handbook.md template
+2026-04-16 21:38:43 | INFO     | Orchestrator | Vault initialization complete
+2026-04-16 21:38:43 | INFO     | Orchestrator | Starting File Watcher
+2026-04-16 21:38:43 | INFO     | Orchestrator | ============================================================
+2026-04-16 21:38:43 | INFO     | Orchestrator | System is now running. Press Ctrl+C to stop.
+2026-04-16 21:38:43 | INFO     | Orchestrator | ============================================================
+2026-04-16 21:38:43 | INFO     | Orchestrator | Monitoring: C:\Users\Dell\Desktop\hackathon0ali\AI_Employee_Vault\Inbox
+2026-04-16 21:38:43 | INFO     | Orchestrator | Check interval: 30 seconds
+2026-04-16 21:38:43 | INFO     | Orchestrator | Dry run mode: Enabled
+2026-04-16 21:38:43 | INFO     | Orchestrator | ============================================================
+2026-04-16 21:38:43 | INFO     | FileWatcher | Starting FileWatcher (check interval: 30s)
+2026-04-16 21:40:13 | INFO     | FileWatcher | File detected: test_invoice.txt (41 bytes)
+2026-04-16 21:40:13 | INFO     | FileWatcher | Created action item: FILE_test_invoice.txt_20260416214013.md

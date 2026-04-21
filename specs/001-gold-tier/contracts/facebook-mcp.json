@@ -1,0 +1,88 @@
+{
+  "name": "facebook-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Facebook Graph API integration",
+  "protocol": "Model Context Protocol v1.0",
+  "capabilities": {
+    "tools": [
+      {
+        "name": "create_post",
+        "description": "Create a post on Facebook page",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "description": "Post text content (max 63206 chars)",
+              "maxLength": 63206
+            },
+            "link": {
+              "type": "string",
+              "format": "uri",
+              "description": "URL to include in post"
+            },
+            "image_paths": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Local file paths to images"
+            },
+            "scheduled_time": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Schedule post for future (ISO 8601)"
+            }
+          },
+          "required": ["message"]
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "success": { "type": "boolean" },
+            "post_id": { "type": "string" },
+            "post_url": { "type": "string" },
+            "error": { "type": "string" }
+          }
+        }
+      },
+      {
+        "name": "get_post_insights",
+        "description": "Get engagement metrics for a published post",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "post_id": {
+              "type": "string",
+              "description": "Facebook post ID"
+            }
+          },
+          "required": ["post_id"]
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "likes": { "type": "integer" },
+            "comments": { "type": "integer" },
+            "shares": { "type": "integer" },
+            "reach": { "type": "integer" },
+            "impressions": { "type": "integer" },
+            "engagement_rate": { "type": "number" },
+            "error": { "type": "string" }
+          }
+        }
+      }
+    ]
+  },
+  "authentication": {
+    "type": "oauth2",
+    "required": ["FACEBOOK_PAGE_ACCESS_TOKEN", "FACEBOOK_PAGE_ID"],
+    "scopes": ["pages_manage_posts", "pages_read_engagement"]
+  },
+  "rateLimits": {
+    "calls_per_hour": 200,
+    "burst_limit": 50
+  },
+  "errorHandling": {
+    "retryable": ["rate_limit", "timeout"],
+    "non_retryable": ["invalid_token", "permission_denied", "invalid_content"]
+  }
+}

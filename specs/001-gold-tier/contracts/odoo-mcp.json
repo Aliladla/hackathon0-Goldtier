@@ -1,0 +1,188 @@
+{
+  "name": "odoo-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Odoo Community Edition integration",
+  "protocol": "Model Context Protocol v1.0",
+  "capabilities": {
+    "tools": [
+      {
+        "name": "create_invoice",
+        "description": "Create a new invoice in Odoo",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "customer_name": {
+              "type": "string",
+              "description": "Customer display name"
+            },
+            "customer_id": {
+              "type": "integer",
+              "description": "Odoo customer ID (optional, will search by name if not provided)"
+            },
+            "line_items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "description": { "type": "string" },
+                  "quantity": { "type": "number" },
+                  "unit_price": { "type": "number" }
+                },
+                "required": ["description", "quantity", "unit_price"]
+              }
+            },
+            "due_date": {
+              "type": "string",
+              "format": "date",
+              "description": "Invoice due date (ISO 8601)"
+            },
+            "reference": {
+              "type": "string",
+              "description": "Internal reference number"
+            }
+          },
+          "required": ["customer_name", "line_items", "due_date"]
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "success": { "type": "boolean" },
+            "invoice_id": { "type": "integer" },
+            "invoice_number": { "type": "string" },
+            "total_amount": { "type": "number" },
+            "error": { "type": "string" }
+          }
+        }
+      },
+      {
+        "name": "record_payment",
+        "description": "Record a payment against an invoice in Odoo",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "invoice_id": {
+              "type": "integer",
+              "description": "Odoo invoice ID"
+            },
+            "amount": {
+              "type": "number",
+              "description": "Payment amount"
+            },
+            "payment_date": {
+              "type": "string",
+              "format": "date",
+              "description": "Payment date (ISO 8601)"
+            },
+            "payment_method": {
+              "type": "string",
+              "enum": ["bank_transfer", "credit_card", "cash", "check"]
+            },
+            "reference": {
+              "type": "string",
+              "description": "Payment reference/transaction ID"
+            }
+          },
+          "required": ["invoice_id", "amount", "payment_date", "payment_method"]
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "success": { "type": "boolean" },
+            "payment_id": { "type": "integer" },
+            "reconciled": { "type": "boolean" },
+            "error": { "type": "string" }
+          }
+        }
+      },
+      {
+        "name": "query_financials",
+        "description": "Query financial data from Odoo for a date range",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "start_date": {
+              "type": "string",
+              "format": "date",
+              "description": "Start date (ISO 8601)"
+            },
+            "end_date": {
+              "type": "string",
+              "format": "date",
+              "description": "End date (ISO 8601)"
+            },
+            "include_overdue": {
+              "type": "boolean",
+              "description": "Include overdue invoices"
+            }
+          },
+          "required": ["start_date", "end_date"]
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "revenue": { "type": "number" },
+            "expenses": { "type": "number" },
+            "profit": { "type": "number" },
+            "invoices_count": { "type": "integer" },
+            "payments_count": { "type": "integer" },
+            "overdue_invoices": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "invoice_id": { "type": "integer" },
+                  "invoice_number": { "type": "string" },
+                  "customer": { "type": "string" },
+                  "amount": { "type": "number" },
+                  "due_date": { "type": "string" }
+                }
+              }
+            },
+            "error": { "type": "string" }
+          }
+        }
+      },
+      {
+        "name": "sync_transactions",
+        "description": "Bidirectional sync between vault and Odoo",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "direction": {
+              "type": "string",
+              "enum": ["push", "pull", "both"],
+              "description": "Sync direction"
+            },
+            "since_date": {
+              "type": "string",
+              "format": "date",
+              "description": "Only sync changes since this date"
+            }
+          },
+          "required": ["direction"]
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "success": { "type": "boolean" },
+            "pushed_count": { "type": "integer" },
+            "pulled_count": { "type": "integer" },
+            "conflicts": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "error": { "type": "string" }
+          }
+        }
+      }
+    ]
+  },
+  "authentication": {
+    "type": "credentials",
+    "required": ["ODOO_URL", "ODOO_DB", "ODOO_USERNAME", "ODOO_PASSWORD"]
+  },
+  "errorHandling": {
+    "retryable": ["network_error", "timeout", "rate_limit"],
+    "non_retryable": ["authentication_error", "invalid_data", "not_found"]
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "name": "twitter-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Twitter API v2 integration",
+  "protocol": "Model Context Protocol v1.0",
+  "capabilities": {
+    "tools": [
+      {
+        "name": "create_tweet",
+        "description": "Create a tweet (with optional thread support)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "description": "Tweet text (max 280 chars)",
+              "maxLength": 280
+            },
+            "image_paths": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Local file paths to images (max 4)",
+              "maxItems": 4
+            },
+            "thread": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 280
+              },
+              "description": "Additional tweets for thread"
+            },
+            "reply_to_tweet_id": {
+              "type": "string",
+              "description": "Tweet ID to reply to (for threading)"
+            }
+          },
+          "required": ["text"]
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "success": { "type": "boolean" },
+            "tweet_id": { "type": "string" },
+            "tweet_url": { "type": "string" },
+            "thread_ids": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "error": { "type": "string" }
+          }
+        }
+      },
+      {
+        "name": "get_tweet_metrics",
+        "description": "Get engagement metrics for a published tweet",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "tweet_id": {
+              "type": "string",
+              "description": "Twitter tweet ID"
+            }
+          },
+          "required": ["tweet_id"]
+        },
+        "outputSchema": {
+          "type": "object",
+          "properties": {
+            "likes": { "type": "integer" },
+            "retweets": { "type": "integer" },
+            "replies": { "type": "integer" },
+            "quotes": { "type": "integer" },
+            "impressions": { "type": "integer" },
+            "engagement_rate": { "type": "number" },
+            "error": { "type": "string" }
+          }
+        }
+      }
+    ]
+  },
+  "authentication": {
+    "type": "oauth2",
+    "required": ["TWITTER_API_KEY", "TWITTER_API_SECRET", "TWITTER_ACCESS_TOKEN", "TWITTER_ACCESS_SECRET"],
+    "scopes": ["tweet.read", "tweet.write", "users.read"]
+  },
+  "rateLimits": {
+    "tweets_per_3_hours": 300,
+    "calls_per_15_minutes": 50
+  },
+  "errorHandling": {
+    "retryable": ["rate_limit", "timeout"],
+    "non_retryable": ["invalid_token", "duplicate_tweet", "text_too_long", "invalid_media"]
+  }
+}
