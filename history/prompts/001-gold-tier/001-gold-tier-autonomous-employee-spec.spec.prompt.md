@@ -2,12 +2,12 @@
 id: 001
 title: Gold Tier Autonomous Employee Specification
 stage: spec
-date: 2026-04-16
+date: 2026-04-21
 surface: agent
 model: claude-sonnet-4-6
 feature: 001-gold-tier
 branch: 001-gold-tier
-user: Tahaimran56
+user: Aliladla
 command: /sp.specify
 labels: ["gold-tier", "autonomous-operation", "odoo-integration", "social-media", "weekly-audit"]
 links:
