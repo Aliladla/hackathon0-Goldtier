@@ -340,7 +340,7 @@ python -m pytest tests/e2e/
 
 ## Changelog
 
-### v2.0.0 (2026-04-17) - Gold Tier Release
+### v2.0.0 (2026-04-21) - Gold Tier Release
 
 **New Features**:
 - ✅ Autonomous task execution (Ralph Wiggum)
@@ -356,7 +356,7 @@ python -m pytest tests/e2e/
 - Component health monitoring and auto-restart
 - Dashboard health integration
 
-### v1.0.0 (2026-04-16) - Bronze Tier Release
+### v1.0.0 (2026-04-17) - Bronze Tier Release
 
 **Features**:
 - Bronze tier: File watching and processing
